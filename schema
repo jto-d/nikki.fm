@@ -1,0 +1,32 @@
+User
+ - Top Songs
+ - Top Artists
+ - Top Albums
+
+Week
+ - Month
+ - Song Data
+ - Album Data
+ - Artist Data
+
+if Week.Artist in User.Artists and Week.Artist not in seen -> Discovered top artist
+if Week.Album in User.Albums and Week.album not in seen -> Discovered top Album
+
+
+Data flow:
+
+Fetch all user data from last.fm api
+    - user.getInfo
+    - user.getTopAlbums (all time)
+    - user.getTopArtists (all time)
+    - user.getTopTracks (all time)
+    - user.getAllWeeks (album, artist, chart)
+
+Go through weekly data
+- If all time artist/album/track *you discovered this*
+
+Diary storypoints
+ - You created your last.fm account! The first song you scrobbled was [song here]
+ - You discovered [artist here] in [month here]
+ - You discovered [album here] in [month here]
+ - You discovered [track here] in [month here]
