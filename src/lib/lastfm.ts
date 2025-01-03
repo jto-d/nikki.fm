@@ -51,6 +51,51 @@ export const getUserInfo = async (userId: string): Promise<GetUserInfoResponse> 
 }
 
 /**
+ * Fetches all time track data for a user
+ * 
+ * @param userId - The Last.fm username
+ * @returns - A promise that resolves to the user's all time top artists, albums, and track
+ *            in JSON format
+ */
+export const getAllTimeData = async (
+    userId: string
+) => {
+    const artistResponse = await axios.get<LastFmResponse<any>>('', {
+        params: {
+            method: 'user.gettopartists',
+            user: userId,
+            period: 'overall',
+            limit: '10'
+        }
+    })
+
+    const albumResponse = await axios.get<LastFmResponse<any>>('', {
+        params: {
+            method: 'user.gettopalbums',
+            user: userId,
+            period: 'overall',
+            limit: '10'
+        }
+    })
+    const trackResponse = await axios.get<LastFmResponse<any>>('', {
+        params: {
+            method: 'user.gettoptracks',
+            user: userId,
+            period: 'overall',
+            limit: '10'
+        }
+    })
+
+    const data = {
+        "topArtists": artistResponse.data.topartists,
+        "topAlbums": albumResponse.data.topalbums,
+        "topTracks": trackResponse.data.toptracks,
+    }
+
+    return data
+}
+
+/**
  * Fetches weekly artist, track, and album data for a specific period.
  * 
  * @param userId - The Last.fm username

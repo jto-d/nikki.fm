@@ -24,6 +24,7 @@ Fetch all user data from last.fm api
 
 Go through weekly data
 - If all time artist/album/track *you discovered this*
+- If last 365 days *you discovered this*
 
 Diary storypoints
  - You created your last.fm account! The first song you scrobbled was [song here]
