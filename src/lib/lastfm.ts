@@ -116,15 +116,23 @@ export const getAllWeeklyData = async (
 }
 
 
-
+/**
+ * Fetches all data needed for creating a diary
+ * 
+ * @param userId - The Last.fm username
+ * @returns A promise that resolves to user diary data
+ */
 export const getUserDiaryInfo = async (userId: string) => {
     const userInfo = await getUserInfo(userId)
 
-    const userRegisteredDate = userInfo.user
-    // const data = await getValidWeeks(userId)
-    // console.log(periods)
+    const userRegisteredDate = userInfo.user.registered.unixtime
 
-    // const artistData = await getWeeklyData(userId, {"from": periods[1000]["from"], "to": periods[1000]["to"]})
+    const validWeeks = await getValidWeeks(userId, userRegisteredDate)
 
-    // console.log(artistData)
+    const lastfmData = await getAllWeeklyData(userId, validWeeks)
+
+    return lastfmData
+
+    
+
 }
