@@ -1,4 +1,4 @@
-import axios from 'axios'
+import apiClient from './apiClient'
 import { binarySearch } from '@/utils/data'
 import { 
     GetUserInfoResponse,
@@ -21,7 +21,7 @@ export const getValidWeeks = async (
     userId: string,
     userRegisteredDate: string
 ): Promise<{ from: string; to: string }[]> => {
-    const response = await axios.get<LastFmResponse<GetWeeklyChartListResponse>>('', {
+    const response = await apiClient.get<LastFmResponse<GetWeeklyChartListResponse>>('', {
         params: {
             method: 'user.getweeklychartlist',
             user: userId,
@@ -40,13 +40,12 @@ export const getValidWeeks = async (
 }
 
 export const getUserInfo = async (userId: string): Promise<GetUserInfoResponse> => {
-    const response = await axios.get<LastFmResponse<GetUserInfoResponse>>('', {
+    const response = await apiClient.get<LastFmResponse<GetUserInfoResponse>>('', {
         params: {
             method: 'user.getinfo',
             user: userId,
         }
     })
-    console.log(response.data)
     return response.data
 }
 
@@ -60,7 +59,7 @@ export const getUserInfo = async (userId: string): Promise<GetUserInfoResponse> 
 export const getAllTimeData = async (
     userId: string
 ) => {
-    const artistResponse = await axios.get<LastFmResponse<any>>('', {
+    const artistResponse = await apiClient.get<LastFmResponse<any>>('', {
         params: {
             method: 'user.gettopartists',
             user: userId,
@@ -69,7 +68,7 @@ export const getAllTimeData = async (
         }
     })
 
-    const albumResponse = await axios.get<LastFmResponse<any>>('', {
+    const albumResponse = await apiClient.get<LastFmResponse<any>>('', {
         params: {
             method: 'user.gettopalbums',
             user: userId,
@@ -77,7 +76,7 @@ export const getAllTimeData = async (
             limit: '10'
         }
     })
-    const trackResponse = await axios.get<LastFmResponse<any>>('', {
+    const trackResponse = await apiClient.get<LastFmResponse<any>>('', {
         params: {
             method: 'user.gettoptracks',
             user: userId,
@@ -106,8 +105,7 @@ export const getWeekData = async (
     userId: string,
     period: {from: string, to: string}
 ): Promise<WeekData> => {
-
-    const artistResponse = await axios.get<LastFmResponse<GetWeeklyArtistChartResponse>>('', {
+    const artistResponse = await apiClient.get<LastFmResponse<GetWeeklyArtistChartResponse>>('', {
         params: {
             method: 'user.getweeklyartistchart',
             user: userId,
@@ -116,18 +114,18 @@ export const getWeekData = async (
         }
     })
 
-    const trackResponse = await axios.get<LastFmResponse<GetWeeklyTrackChartResponse>>('', {
+    const trackResponse = await apiClient.get<LastFmResponse<GetWeeklyTrackChartResponse>>('', {
         params: {
-            methods: 'user.getweeklytrackchart',
+            method: 'user.getweeklytrackchart',
             user: userId,
             from: period.from,
             to: period.to,
         }
     })
 
-    const albumResponse = await axios.get<LastFmResponse<GetWeeklyAlbumChartResponse>>('', {
+    const albumResponse = await apiClient.get<LastFmResponse<GetWeeklyAlbumChartResponse>>('', {
         params: {
-            methods: 'user.getweeklyalbumchart',
+            method: 'user.getweeklyalbumchart',
             user: userId,
             from: period.from,
             to: period.to,
@@ -136,9 +134,9 @@ export const getWeekData = async (
 
     const data = {
         "period": period,
-        "artistData": artistResponse.data.weeklychartlist.artist,
-        "trackData": trackResponse.data.weeklychartlist.track,
-        "albumData": albumResponse.data.weeklychartlist.album,
+        "artistData": artistResponse.data.weeklyartistchart.artist,
+        "trackData": trackResponse.data.weeklytrackchart.track,
+        "albumData": albumResponse.data.weeklyalbumchart.album,
     }
 
     return data
@@ -169,6 +167,7 @@ export const getAllWeeklyData = async (
  */
 export const getUserDiaryInfo = async (userId: string) => {
     const userInfo = await getUserInfo(userId)
+    console.log(userInfo)
 
     const userRegisteredDate = userInfo.user.registered.unixtime
 
@@ -176,7 +175,15 @@ export const getUserDiaryInfo = async (userId: string) => {
 
     const lastfmData = await getAllWeeklyData(userId, validWeeks)
 
-    return lastfmData
+    const allTimeData = await getAllTimeData(userId)
+
+    const data = {
+        "lastfmData": lastfmData,
+        "allTimeData": allTimeData,
+    }
+    console.log(data)
+
+    return data
 
     
 

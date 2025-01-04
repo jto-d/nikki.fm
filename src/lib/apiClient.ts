@@ -16,4 +16,14 @@ const apiClient: AxiosInstance = axios.create({
     },
 })
 
-// interceptors here if needed
+apiClient.interceptors.response.use(
+    (response: AxiosResponse) => {
+        return response
+    },
+    (error: AxiosError) => {
+        console.error('API Response Error:', error.response?.data || error.message)
+        return Promise.reject(error)
+    }
+)
+
+export default apiClient

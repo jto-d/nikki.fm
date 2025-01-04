@@ -29,7 +29,7 @@ export interface Album {
 }
 
 export interface GetWeeklyAlbumChartResponse {
-    weeklychartlist: {
+    weeklyalbumchart: {
         album: Album[];
         "@attr": {
             from: string;
@@ -53,7 +53,7 @@ export interface Artist {
 }
 
 export interface GetWeeklyArtistChartResponse {
-    weeklychartlist: {
+    weeklyartistchart: {
         artist: Artist[];
         "@attr": {
             from: string;
@@ -82,7 +82,7 @@ export interface Track {
 }
 
 export interface GetWeeklyTrackChartResponse {
-    weeklychartlist: {
+    weeklytrackchart: {
         track: Track[];
         "@attr": {
             from: string;
