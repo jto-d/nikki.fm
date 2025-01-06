@@ -29,6 +29,7 @@ export const getValidWeeks = async (
     })
 
     const data = response.data
+    console.log(data)
     
     const periods = data.weeklychartlist.chart
     const targetDate = Number(userRegisteredDate)

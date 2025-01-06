@@ -22,6 +22,7 @@ export interface AlbumArtist {
 export interface Album {
     mbid: string;
     url: string;
+    image: any;
     name: string;
     artist: AlbumArtist;
     "@attr": AlbumAttributes;
@@ -48,6 +49,7 @@ export interface Artist {
     mbid: string;
     url: string;
     name: string;
+    image: any;
     "@attr": ArtistAttributes;
     playcount: string;
 }
@@ -71,6 +73,7 @@ export interface TrackAttributes {
 export interface Track {
     mbid: string;
     url: string;
+    image: any;
     name: string;
     artist: {
         mbid: string;
